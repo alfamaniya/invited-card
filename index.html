@@ -204,6 +204,7 @@ async function confirmAndShare(){
  }finally{finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌';showPage(pages[0]);}
 }
 guestNameInput.addEventListener('input',()=>{openButton.disabled=!guestNameInput.value.trim()});
+guestNameInput.addEventListener('keydown',event=>{if(event.key==='Enter'&&!openButton.disabled){event.preventDefault();openButton.click()}});
 openButton.addEventListener('click',()=>{
  guestName=guestNameInput.value.trim();
  if(!guestName){guestNameInput.focus();showToast('اول اسمت رو بنویس تا دعوتنامه رو برات آماده کنم 💗');return;}
