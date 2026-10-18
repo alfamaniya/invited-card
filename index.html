@@ -99,7 +99,7 @@ function showToast(text){
 function resetNoButton(){
  noAttempts=0;noButton.style.left='';noButton.style.top='';noButton.style.transform='';
  noButton.style.position='';noButton.style.visibility='';noButton.style.pointerEvents='';
- noButton.dataset.moved='false';feedback.textContent='منتظر جواب شیرینتم... 💗';
+ noButton.dataset.moved='false';feedback.textContent=guestName?guestName+' جان، منتظر جواب شیرینتم... 💗':'منتظر جواب شیرینتم... 💗';
 }
 function moveNoButton(event){
  if(event)event.preventDefault();
@@ -118,7 +118,7 @@ function moveNoButton(event){
  }while(tries<24);
  noButton.style.position='absolute';noButton.style.left=x+'px';noButton.style.top=y+'px';noButton.style.transform='none';
  noButton.dataset.moved='true';noAttempts++;
- feedback.textContent=noMessages[(noAttempts-1)%noMessages.length];
+ feedback.textContent=guestName+' جان، '+noMessages[(noAttempts-1)%noMessages.length];
 }
 function buildCalendar(){
  datesElement.replaceChildren();
@@ -141,7 +141,7 @@ function buildCalendar(){
    datesElement.querySelectorAll('.selected').forEach(old=>{old.classList.remove('selected');old.setAttribute('aria-pressed','false')});
    button.classList.add('selected');button.setAttribute('aria-pressed','true');selectedDay=new Date(dateCopy);
    selectedDate.textContent=guestName+' جان، قرارمون برای '+fullPersianDate.format(dateCopy)+' 💗';
-   maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];
+   maniaMessage.textContent=guestName+' جان، '+messages[Math.floor(Math.random()*messages.length)];
    finishButton.disabled=false;
   });
   grid.appendChild(button);
@@ -193,11 +193,11 @@ async function confirmAndShare(){
  try{
   const blob=await drawShareImage();const file=new File([blob],'gharar-ba-mania.png',{type:'image/png'});
   if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-   await navigator.share({files:[file],title:'قرار من و مانیا 💌',text:'تاریخ قرارمون رو انتخاب کردیم 💗'});
+   await navigator.share({files:[file],title:'قرار من و مانیا 💌',text:guestName+' جان، تاریخ قرارمون رو انتخاب کردیم 💗'});
   }else{
    const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='gharar-ba-mania.png';document.body.appendChild(link);link.click();link.remove();
    showToast('تصویر تقویم دانلود شد؛ حالا می‌تونی از گالری یا فایل‌ها به اشتراک بذاری. 💗');
-   if(navigator.share){try{await navigator.share({title:'قرار من و مانیا 💌',text:'تاریخ قرارمون: '+fullPersianDate.format(selectedDay)})}catch(_){}}
+   if(navigator.share){try{await navigator.share({title:'قرار من و مانیا 💌',text:guestName+' جان، تاریخ قرارمون: '+fullPersianDate.format(selectedDay)})}catch(_){}}
   }
  }catch(error){
   if(error&&error.name!=='AbortError')showToast('اشتراک‌گذاری مستقیم در این مرورگر در دسترس نیست؛ تصویر رو دوباره امتحان کن. 💜');
@@ -207,6 +207,7 @@ guestNameInput.addEventListener('input',()=>{openButton.disabled=!guestNameInput
 openButton.addEventListener('click',()=>{
  guestName=guestNameInput.value.trim();
  if(!guestName){guestNameInput.focus();showToast('اول اسمت رو بنویس تا دعوتنامه رو برات آماده کنم 💗');return;}
+ document.title='دعوتنامه برای '+guestName+' 💌';
  $('questionTitle').textContent=guestName+' جان، پایه‌ای با من یه قرار قشنگ بذاری؟ 🥹';
  $('invitationEyebrow').textContent='دعوت مخصوص '+guestName+' 😌';
  $('calendarEyebrow').textContent='قرار '+guestName+' و مانیا رو بسازیم';
