@@ -82,7 +82,38 @@ const messages=[
 'این دعوت کوچولو، کلی ذوق پشتشه. امیدوارم تو هم ذوق کنی! 💗',
 'هر تاریخی انتخاب کنی، مهم اینه که با حال خوب بیای. 🌸'
 ];
-const noMessages=['هه! نزدیک بود 😜','اوه اوه، چه سریع بودی! 🙈','این دکمه خیلی خجالتیه 😂','فقط آره رو امتحان کن! 💗','نه؟ من که چیزی ندیدم! ✨','ای وای، دوباره فرار کرد! 🏃‍♀️💨'];
+const noMessages=[
+'وای، چه سرعتی! نزدیک بود بگیریش 😄',
+'این دکمه امروز حسابی بازیگوش شده 🙈',
+'فکر کنم هنوز برای جواب دادن زوده! 🌷',
+'یه بار دیگه امتحان کن، شاید این بار! ✨',
+'نه گفتن هم محترمه؛ دکمه فقط شوخی می‌کنه 💗',
+'اوه، دوباره از دستت در رفت! 😅',
+'این یکی انگار قایم‌موشک دوست داره 🌸',
+'قول می‌دم دکمه از تو خجالتی‌تره! 😊',
+'چه تلاش قشنگی، دوباره امتحان کن 💕',
+'نزدیک بود! یه ذره دیگه مونده بود 😄',
+'این دکمه انگار کفش ورزشی پوشیده 🏃‍♀️',
+'آروم‌تر، هنوز داره گرم می‌کنه! 😆',
+'یه نفس بگیر و دوباره تلاش کن 🌼',
+'فکر کنم دکمه‌مون شیطنتش گل کرده 🙃',
+'تو تلاش کن، منم تشویقت می‌کنم! 👏',
+'این یکی از دست قهرمان فرار کرد! ✨',
+'دکمه جان، یکم مهربون‌تر باش! 😂',
+'اوه نه، باز هم جاخالی داد! 🌷',
+'یه روزی بالاخره غافلگیرش می‌کنی 😌',
+'این بازی از چیزی که فکر می‌کردم سخت‌تره! 💫',
+'تقریباً موفق شدی؛ دوباره تلاش کن 💖',
+'دکمه‌مون امروز خیلی پرانرژیه! ⚡',
+'به نظرم داره باهات قایم‌موشک بازی می‌کنه 😄',
+'چه پشتکاری! یک تلاش دیگه؟ 🌸',
+'دکمه فرار کرد، ولی لبخندت سر جاشه 😊',
+'این یکی هم از دستت لیز خورد! 🙈',
+'شاید باید باهاش خیلی مؤدبانه صحبت کنی 😇',
+'یه تلاش دیگه، قهرمان کوچولو! 💗',
+'این دکمه اصلاً اهل همکاری نیست 😂',
+'ممنون که با حوصله بازی می‌کنی؛ دوباره؟ 🌷'
+];
 const persianParts=new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'});
 const fullPersianDate=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const monthNames=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
@@ -227,7 +258,9 @@ finishButton.addEventListener('click',confirmAndShare);
 noButton.addEventListener('pointerenter',moveNoButton);
 noButton.addEventListener('pointerdown',moveNoButton);
 noButton.addEventListener('click',moveNoButton);
-noButton.addEventListener('focus',()=>{if(!pages[1].hidden)moveNoButton()});
+noButton.addEventListener('focus',()=>{noButton.classList.add('keyboard-focused')});
+noButton.addEventListener('blur',()=>{noButton.classList.remove('keyboard-focused')});
+noButton.addEventListener('click',event=>{if(event.detail===0){feedback.textContent=guestName+' جان، تلاش خوبی بود! انتخابت محترمه 💗';}});
 window.addEventListener('resize',()=>{if(!pages[1].hidden&&noButton.dataset.moved==='true')moveNoButton()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!pages[0].hidden){showPage(pages[0])}});
 })();
