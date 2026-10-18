@@ -257,10 +257,9 @@ $('backToQuestion').addEventListener('click',()=>{resetNoButton();showPage(pages
 finishButton.addEventListener('click',confirmAndShare);
 noButton.addEventListener('pointerenter',moveNoButton);
 noButton.addEventListener('pointerdown',moveNoButton);
-noButton.addEventListener('click',moveNoButton);
+noButton.addEventListener('click',event=>{if(event.detail===0){feedback.textContent=guestName+' جان، تلاش خوبی بود! انتخابت محترمه 💗';return;}moveNoButton(event)});
 noButton.addEventListener('focus',()=>{noButton.classList.add('keyboard-focused')});
 noButton.addEventListener('blur',()=>{noButton.classList.remove('keyboard-focused')});
-noButton.addEventListener('click',event=>{if(event.detail===0){feedback.textContent=guestName+' جان، تلاش خوبی بود! انتخابت محترمه 💗';}});
 window.addEventListener('resize',()=>{if(!pages[1].hidden&&noButton.dataset.moved==='true')moveNoButton()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!pages[0].hidden){showPage(pages[0])}});
 })();
