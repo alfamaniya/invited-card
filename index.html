@@ -16,8 +16,10 @@
 <div class="eyebrow"><span class="sparkle">✦</span> یه چیز کوچولو برای تو <span class="sparkle">✦</span></div>
 <div class="hero-envelope" aria-hidden="true">💌</div>
 <h1 id="landingTitle">یه دعوت قشنگ<br><span>از طرف مانیا</span></h1>
-<p class="hero-copy">بعضی قرارها از همون لحظه‌ای که پیشنهاد می‌شن، خاطره‌ان. آماده‌ای؟ ✨</p>
-<button class="button button-primary" id="openButton" type="button"><span>باز کردن دعوتنامه</span><span class="button-icon" aria-hidden="true">✧</span></button>
+<p class="hero-copy">بعضی قرارها از همون لحظه‌ای که پیشنهاد می‌شن، خاطره‌ان. ✨</p>
+<label class="name-label" for="guestName">اول از همه، اسمت چیه؟</label>
+<input class="name-input" id="guestName" name="guestName" type="text" maxlength="40" autocomplete="given-name" placeholder="اسمت رو اینجا بنویس..." required>
+<button class="button button-primary" id="openButton" type="button" disabled><span>باز کردن دعوتنامه</span><span class="button-icon" aria-hidden="true">✧</span></button>
 <div class="tiny-note">با یه لبخند بازش کن :)</div>
 </div>
 <div class="landing-footer">ساخته‌شده با کمی ذوق و کلی قلب 💜</div>
@@ -26,7 +28,7 @@
 <section class="screen invitation" id="invitation" aria-labelledby="questionTitle" hidden>
 <div class="glass invitation-card">
 <div class="mini-envelope" aria-hidden="true">💌</div>
-<div class="eyebrow">دعوت رسمیِ غیررسمی 😌</div>
+<div class="eyebrow" id="invitationEyebrow">دعوت رسمیِ غیررسمی 😌</div>
 <h2 id="questionTitle">پایه‌ای با من یه قرار قشنگ بذاری؟ 🥹</h2>
 <p class="question-copy">قول می‌دم خوش بگذره؛ فقط کافیه جوابت رو انتخاب کنی!</p>
 <p class="feedback" id="feedback" aria-live="polite">منتظر جواب شیرینتم... 💗</p>
@@ -42,15 +44,15 @@
 <div class="calendar-layout">
 <header class="calendar-header">
 <div class="calendar-icon" aria-hidden="true">🌷</div>
-<div class="eyebrow">قرارمون رو بسازیم</div>
-<h2 id="calendarTitle">پس کی ببینمت؟ <span>✨</span></h2>
+<div class="eyebrow" id="calendarEyebrow">قرارمون رو بسازیم</div>
+<h2 id="calendarTitle">پس کی ببینمت؟ ✨</h2>
 <p>یه روز خوشگل انتخاب کن تا بذاریمش توی برنامه‌هامون.</p>
 </header>
 <div class="glass calendar-panel">
 <div class="calendar-panel-heading"><span>📅</span><div><strong>تقویم قرارمون</strong><small>روز موردنظرت رو انتخاب کن</small></div></div>
 <div class="dates" id="dates" aria-label="تقویم ماه جاری و ماه بعد"></div>
 <div class="selected-date" id="selectedDate" aria-live="polite">هنوز روزی انتخاب نکردی 💫</div>
-<div class="mania-note" id="maniaNote"><span class="note-star">✦</span><p id="maniaMessage">یه خاطره‌ی خوب، با یه انتخاب کوچولو شروع می‌شه. 💜</p><small>با عشق، مانیا</small></div>
+<div class="mania-note" id="maniaNote"><span class="note-star">✦</span><p id="maniaMessage">یه خاطره‌ی خوب، با یه انتخاب کوچولو شروع می‌شه. 💜</p><small id="signature">با عشق، مانیا</small></div>
 <div class="calendar-actions"><button class="button button-primary" id="finishButton" type="button" disabled>تأیید و اشتراک‌گذاری 💌</button><button class="text-button" id="backToQuestion" type="button">برگشت به دعوتنامه</button></div>
 </div>
 <footer class="calendar-footer">هر روزی که با حال خوب بگذره، می‌تونه بهترین روز باشه ✨</footer>
@@ -63,6 +65,8 @@
 const $ = id => document.getElementById(id);
 const pages=[$('landing'),$('invitation'),$('calendarScreen')];
 const openButton=$('openButton'),yesButton=$('yesButton'),noButton=$('noButton');
+const guestNameInput=$('guestName');
+let guestName='';
 const arena=$('buttonArena'),feedback=$('feedback'),datesElement=$('dates');
 const selectedDate=$('selectedDate'),maniaMessage=$('maniaMessage'),finishButton=$('finishButton');
 const toast=$('toast');
@@ -136,7 +140,7 @@ function buildCalendar(){
   button.addEventListener('click',()=>{
    datesElement.querySelectorAll('.selected').forEach(old=>{old.classList.remove('selected');old.setAttribute('aria-pressed','false')});
    button.classList.add('selected');button.setAttribute('aria-pressed','true');selectedDay=new Date(dateCopy);
-   selectedDate.textContent='قرارمون برای '+fullPersianDate.format(dateCopy)+' 💗';
+   selectedDate.textContent=guestName+' جان، قرارمون برای '+fullPersianDate.format(dateCopy)+' 💗';
    maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];
    finishButton.disabled=false;
   });
@@ -154,13 +158,13 @@ function drawShareImage(){
   for(let y=0;y<1350;y+=42){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1080,y);ctx.stroke()}
   const roundRect=(x,y,w,h,r)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r)};
   roundRect(65,65,950,1220,42);ctx.fillStyle='rgba(255,255,255,.13)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
-  ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#ffe3f4';ctx.font='600 34px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText('یه قرار قشنگ از طرف مانیا 💌',540,145);
-  ctx.fillStyle='#ffffff';ctx.font='800 54px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText('پس کی ببینمت؟',540,225);
-  ctx.fillStyle='#f8eaff';ctx.font='500 28px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText('این روز رو برای قرارمون انتخاب کردیم:',540,278);
+  ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#ffe3f4';ctx.font='600 34px Tahoma, sans-serif';ctx.fillText('یه قرار قشنگ از طرف مانیا برای '+guestName+' 💌',540,145);
+  ctx.fillStyle='#ffffff';ctx.font='800 54px Tahoma, sans-serif';ctx.fillText('پس کی ببینمت؟',540,225);
+  ctx.fillStyle='#f8eaff';ctx.font='500 28px Tahoma, sans-serif';ctx.fillText(guestName+' جان، این روز رو برای قرارمون انتخاب کردیم:',540,278);
   const p=persianDate(selectedDay);const monthLabel=monthNames[p.month-1]+' '+new Intl.NumberFormat('fa-IR').format(p.year);
   roundRect(125,330,830,540,30);ctx.fillStyle='rgba(255,255,255,.11)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.28)';ctx.stroke();
-  ctx.fillStyle='#ffe1f2';ctx.font='700 38px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText(monthLabel,540,390);
-  const weekdays=['ش','ی','د','س','چ','پ','ج'];ctx.font='600 24px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillStyle='#e9d9ff';
+  ctx.fillStyle='#ffe1f2';ctx.font='700 38px Tahoma, sans-serif';ctx.fillText(monthLabel,540,390);
+  const weekdays=['ش','ی','د','س','چ','پ','ج'];ctx.font='600 24px Tahoma, sans-serif';ctx.fillStyle='#e9d9ff';
   const cellW=94,startX=540-(cellW*7/2)+cellW/2;
   weekdays.forEach((d,i)=>ctx.fillText(d,startX+i*cellW,445));
   const monthStart=new Date(selectedDay);while(persianDate(monthStart).day!==1)monthStart.setDate(monthStart.getDate()-1);
@@ -171,15 +175,15 @@ function drawShareImage(){
    const col=(offset+i)%7,row=Math.floor((offset+i)/7),x=startX+col*cellW,y=490+row*62;
    const isChosen=i===chosenIndex;
    if(isChosen){roundRect(x-31,y-31,62,54,15);ctx.fillStyle='#fbcfe8';ctx.fill()}
-   ctx.fillStyle=isChosen?'#51265d':'#ffffff';ctx.font=(isChosen?'800 ':'500 ')+'26px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';
+   ctx.fillStyle=isChosen?'#51265d':'#ffffff';ctx.font=(isChosen?'800 ':'500 ')+'26px Tahoma, sans-serif';
    ctx.fillText(new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric'}).format(day),x,y+8);
   });
-  ctx.fillStyle='#ffffff';ctx.font='700 39px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText(fullPersianDate.format(selectedDay),540,955);
-  ctx.fillStyle='#ffedf7';ctx.font='500 29px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';
-  const msg=maniaMessage.textContent;const maxChars=38;const lines=[];
+  ctx.fillStyle='#ffffff';ctx.font='700 39px Tahoma, sans-serif';ctx.fillText(fullPersianDate.format(selectedDay),540,955);
+  ctx.fillStyle='#ffedf7';ctx.font='500 29px Tahoma, sans-serif';
+  const msg=guestName+' جان، '+maniaMessage.textContent;const maxChars=38;const lines=[];
   for(let i=0;i<msg.length;i+=maxChars)lines.push(msg.slice(i,i+maxChars));
   lines.slice(0,3).forEach((line,i)=>ctx.fillText(line,540,1030+i*48));
-  ctx.fillStyle='#ffe3f4';ctx.font='700 34px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif';ctx.fillText('با عشق، مانیا ✨',540,1200);
+  ctx.fillStyle='#ffe3f4';ctx.font='700 34px Tahoma, sans-serif';ctx.fillText('با عشق، مانیا و '+guestName+' ✨',540,1200);
   canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('ساخت تصویر ناموفق بود')),'image/png');
  });
 }
@@ -197,9 +201,19 @@ async function confirmAndShare(){
   }
  }catch(error){
   if(error&&error.name!=='AbortError')showToast('اشتراک‌گذاری مستقیم در این مرورگر در دسترس نیست؛ تصویر رو دوباره امتحان کن. 💜');
- }finally{finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌'}
+ }finally{finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌';showPage(pages[0]);}
 }
-openButton.addEventListener('click',()=>{resetNoButton();showPage(pages[1]);yesButton.focus()});
+guestNameInput.addEventListener('input',()=>{openButton.disabled=!guestNameInput.value.trim()});
+openButton.addEventListener('click',()=>{
+ guestName=guestNameInput.value.trim();
+ if(!guestName){guestNameInput.focus();showToast('اول اسمت رو بنویس تا دعوتنامه رو برات آماده کنم 💗');return;}
+ $('questionTitle').textContent=guestName+' جان، پایه‌ای با من یه قرار قشنگ بذاری؟ 🥹';
+ $('invitationEyebrow').textContent='دعوت مخصوص '+guestName+' 😌';
+ $('calendarEyebrow').textContent='قرار '+guestName+' و مانیا رو بسازیم';
+ $('calendarTitle').textContent='پس کی ببینمت، '+guestName+' جان؟ ✨';
+ $('signature').textContent='با عشق، مانیا و '+guestName;
+ resetNoButton();showPage(pages[1]);yesButton.focus();
+});
 $('backToHome').addEventListener('click',()=>showPage(pages[0]));
 yesButton.addEventListener('click',()=>{buildCalendar();selectedDay=null;selectedDate.textContent='هنوز روزی انتخاب نکردی 💫';finishButton.disabled=true;maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];showPage(pages[2])});
 $('backToQuestion').addEventListener('click',()=>{resetNoButton();showPage(pages[1])});
