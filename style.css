@@ -53,8 +53,8 @@ h1 span{background:linear-gradient(100deg,#fff 15%,#ffd4ec 48%,#d8c7ff 85%);-web
 .calendar-panel-heading>span{display:grid;place-items:center;width:clamp(30px,4vh,40px);height:clamp(30px,4vh,40px);border-radius:15px;background:#ffffff17;font-size:23px}
 .calendar-panel-heading strong,.calendar-panel-heading small{display:block}
 .calendar-panel-heading strong{font-size:16px}.calendar-panel-heading small{margin-top:3px;color:#dfd3f4;font-size:12px}
-.dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(5px,1vw,12px);max-height:none;overflow:visible;padding:0;}
-.month{min-width:0;padding:clamp(4px,.8vh,9px);border:1px solid #ffffff24;border-radius:17px;background:#ffffff09}
+.dates{display:block;max-height:none;overflow:visible;padding:0;}
+.month{width:100%;min-width:0;padding:clamp(4px,.8vh,9px);border:1px solid #ffffff24;border-radius:17px;background:#ffffff09}
 .month-title{position:relative;top:auto;z-index:1;margin:0 0 5px;padding:clamp(4px,.7vh,7px) 4px;border-radius:10px;text-align:center;color:#fff;background:linear-gradient(120deg,#9870d8e8,#cf80b8e8);font-size:13px;backdrop-filter:blur(10px)}
 .date-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(2px,.4vw,5px)}
 .weekday{display:grid;place-items:center;min-width:0;min-height:clamp(15px,2vh,22px);color:#e5d5ff;font-size:clamp(9px,1.3vh,12px)}
@@ -62,7 +62,7 @@ h1 span{background:linear-gradient(100deg,#fff 15%,#ffd4ec 48%,#d8c7ff 85%);-web
 .date-button{min-width:0;min-height:clamp(22px,3.1vh,34px);padding:1px 0;border:1px solid #ffffff21;border-radius:10px;background:#ffffff0a;color:#f8efff;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;font-size:clamp(9px,1.5vh,13px)}
 .date-button:disabled{opacity:.24;cursor:default;transform:none}
 .date-button:hover{transform:translateY(-2px);border-color:#f0c6ff;background:#ffffff20}
-.date-button.selected{color:#48204f;background:linear-gradient(135deg,#fbcfe8,#ddd6fe);border-color:#fff;box-shadow:0 4px 16px #e9a9f73b}
+.date-button.today-date{border-color:#f9a8d4;box-shadow:inset 0 0 0 1px #f9a8d455;color:#ffe0f1}.date-button.selected{color:#48204f;background:linear-gradient(135deg,#fbcfe8,#ddd6fe);border-color:#fff;box-shadow:0 4px 16px #e9a9f73b}
 .selected-date{min-height:clamp(30px,4vh,42px);display:flex;align-items:center;justify-content:center;margin-top:clamp(5px,.8vh,10px);padding:clamp(4px,.8vh,8px);border:1px solid #ffffff20;border-radius:14px;background:#ffffff09;text-align:center;color:#ffe1f3;font-size:14px;line-height:1.8}
 .mania-note{position:relative;margin-top:clamp(5px,.8vh,10px);padding:clamp(5px,1vh,11px) 12px;border:1px solid #fbcfe83d;border-radius:18px;background:linear-gradient(120deg,#fbcfe813,#ddd6fe13);text-align:center;overflow:hidden}
 .note-star{color:#f9c6e5;font-size:clamp(12px,2vh,18px)}
@@ -78,7 +78,7 @@ h1 span{background:linear-gradient(100deg,#fff 15%,#ffd4ec 48%,#d8c7ff 85%);-web
 @keyframes floatIn{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes envelopeFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
 @keyframes orb{from{transform:translate3d(-15px,0,0) scale(.95)}to{transform:translate3d(35px,25px,0) scale(1.12)}}
-@media(max-width:760px){.dates{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-screen{align-items:center}.calendar-panel{border-radius:18px}.calendar-header{margin-bottom:0}}
+@media(max-width:760px){.calendar-screen{align-items:center}.calendar-panel{border-radius:18px}.calendar-header{margin-bottom:0}}
 @media(max-width:430px){.hero{border-radius:24px;padding:clamp(15px,4vh,32px) 18px}.hero-envelope{margin:clamp(8px,2vh,18px) 0}.hero-copy{margin:10px auto 16px;line-height:1.7}.landing-footer{margin-top:10px}.invitation-card{border-radius:22px;padding:clamp(12px,3vh,24px) 15px}.mini-envelope{font-size:35px;margin-bottom:5px}.invitation-card h2{font-size:clamp(21px,4vh,30px);line-height:1.45;margin:7px 0}.question-copy{font-size:12px;line-height:1.6}.feedback{margin:9px 0 4px;min-height:36px;font-size:12px}.button-arena{gap:8px;min-height:76px}.button{padding:9px 14px;min-height:42px;font-size:12px}.dates{gap:4px}.month{padding:4px}.date-grid{gap:2px}.date-button{min-height:clamp(20px,3vh,29px);border-radius:6px}.calendar-panel{padding:7px}.calendar-header p{font-size:10px}.calendar-panel-heading strong{font-size:13px}.calendar-panel-heading small{font-size:10px}.calendar-header h2{font-size:clamp(19px,3.4vh,27px)}}
 @media(max-height:650px){.calendar-icon{display:none}.calendar-header .eyebrow{margin-top:0}.calendar-panel-heading{margin-bottom:4px}.calendar-footer{display:none}.hero-envelope{font-size:52px;margin:8px 0}.hero{padding:16px 20px}.invitation-card{padding:12px 20px}.mini-envelope{font-size:30px;margin-bottom:2px}.invitation-card h2{margin:5px 0}.feedback{margin:5px 0;min-height:32px}.button-arena{min-height:62px}.text-button{margin-top:5px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
