@@ -26,14 +26,16 @@
 </section>
 
 <section class="screen invitation" id="invitation" aria-labelledby="questionTitle" hidden>
-<div class="glass invitation-card">
+<div class="glass invitation-card" id="invitationCard">
 <div class="mini-envelope" aria-hidden="true">💌</div>
 <div class="eyebrow" id="invitationEyebrow">دعوت رسمیِ غیررسمی 😌</div>
 <h2 id="questionTitle">پایه‌ای با من یه قرار قشنگ بذاری؟ 🥹</h2>
 <p class="question-copy">قول می‌دم خوش بگذره؛ فقط کافیه جوابت رو انتخاب کنی!</p>
 <p class="feedback" id="feedback" aria-live="polite">منتظر جواب شیرینتم... 💗</p>
-<div class="button-arena" id="buttonArena">
+<div class="button-options">
 <button class="button button-yes" id="yesButton" type="button">آره، حتماً 💗</button>
+</div>
+<div class="button-arena" id="buttonArena" aria-label="محدوده حرکت دکمه نه">
 <button class="button button-no" id="noButton" type="button">نه 🙈</button>
 </div>
 <button class="text-button" id="backToHome" type="button">← برگشت به اول</button>
@@ -67,7 +69,7 @@ const pages=[$('landing'),$('invitation'),$('calendarScreen')];
 const openButton=$('openButton'),yesButton=$('yesButton'),noButton=$('noButton');
 const guestNameInput=$('guestName');
 let guestName='';
-const arena=$('buttonArena'),feedback=$('feedback'),datesElement=$('dates');
+const arena=$('buttonArena'),invitationCard=$('invitationCard'),feedback=$('feedback'),datesElement=$('dates');
 const selectedDate=$('selectedDate'),maniaMessage=$('maniaMessage'),finishButton=$('finishButton');
 const toast=$('toast');
 let selectedDay=null,noAttempts=0,toastTimer=null;
@@ -104,18 +106,20 @@ function resetNoButton(){
 function moveNoButton(event){
  if(event)event.preventDefault();
  if(pages[1].hidden)return;
- const arenaRect=arena.getBoundingClientRect();
+ const cardRect=invitationCard.getBoundingClientRect();
  const buttonRect=noButton.getBoundingClientRect();
  const yesRect=yesButton.getBoundingClientRect();
- const pad=8,maxX=Math.max(pad,arena.clientWidth-buttonRect.width-pad),maxY=Math.max(pad,arena.clientHeight-buttonRect.height-pad);
- let x=pad,y=pad,tries=0;
+ const feedbackRect=feedback.getBoundingClientRect();
+ const pad=14,maxX=Math.max(pad,invitationCard.clientWidth-buttonRect.width-pad),maxY=Math.max(pad,invitationCard.clientHeight-buttonRect.height-pad);
+ let x=pad,y=pad,tries=0,valid=false;
+ const overlaps=(a,b,gap=10)=>!(a.right+gap<b.left||a.left-gap>b.right||a.bottom+gap<b.top||a.top-gap>b.bottom);
  do{
    x=pad+Math.random()*Math.max(0,maxX-pad);
    y=pad+Math.random()*Math.max(0,maxY-pad);
-   const candidate={left:arenaRect.left+x,right:arenaRect.left+x+buttonRect.width,top:arenaRect.top+y,bottom:arenaRect.top+y+buttonRect.height};
-   const overlapsYes=!(candidate.right+14<yesRect.left||candidate.left-14>yesRect.right||candidate.bottom+10<yesRect.top||candidate.top-10>yesRect.bottom);
-   tries++;if(!overlapsYes)break;
- }while(tries<24);
+   const candidate={left:cardRect.left+x,right:cardRect.left+x+buttonRect.width,top:cardRect.top+y,bottom:cardRect.top+y+buttonRect.height};
+   valid=!overlaps(candidate,yesRect,14)&&!overlaps(candidate,feedbackRect,12);
+   tries++;
+ }while(!valid&&tries<80);
  noButton.style.position='absolute';noButton.style.left=x+'px';noButton.style.top=y+'px';noButton.style.transform='none';
  noButton.dataset.moved='true';noAttempts++;
  feedback.textContent=guestName+' جان، '+noMessages[(noAttempts-1)%noMessages.length];
