@@ -3,121 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#7655e8">
-<meta name="description" content="یک کارت دعوت دوستانه و تعاملی">
-<title>یک دعوت کوچولو 💌</title>
+<meta name="theme-color" content="#8b5cf6">
+<meta name="description" content="یک دعوت کوچولو و دوست‌داشتنی از طرف مانیا 💌">
+<title>یه دعوت از طرف مانیا 💌</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="card">
-<div class="envelope" aria-hidden="true">💌</div>
-<h1>سلام دوست من!</h1>
-<p class="intro">یه دعوت کوچولو دارم برات؛ آماده‌ای ببینی چیه؟ ✨</p>
-<button class="primary" id="openButton" type="button">باز کردن دعوتنامه</button>
+<div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+<main>
+<section class="screen landing active" id="landing" aria-labelledby="landingTitle">
+<div class="glass hero">
+<div class="eyebrow"><span class="sparkle">✦</span> یه چیز کوچولو برای تو <span class="sparkle">✦</span></div>
+<div class="hero-envelope" aria-hidden="true">💌</div>
+<h1 id="landingTitle">یه دعوت قشنگ<br><span>از طرف مانیا</span></h1>
+<p class="hero-copy">بعضی قرارها از همون لحظه‌ای که پیشنهاد می‌شن، خاطره‌ان. آماده‌ای؟ ✨</p>
+<button class="button button-primary" id="openButton" type="button"><span>باز کردن دعوتنامه</span><span class="button-icon" aria-hidden="true">✧</span></button>
+<div class="tiny-note">با یه لبخند بازش کن :)</div>
+</div>
+<div class="landing-footer">ساخته‌شده با کمی ذوق و کلی قلب 💜</div>
+</section>
+
+<section class="screen invitation" id="invitation" aria-labelledby="questionTitle" hidden>
+<div class="glass invitation-card">
+<div class="mini-envelope" aria-hidden="true">💌</div>
+<div class="eyebrow">دعوت رسمیِ غیررسمی 😌</div>
+<h2 id="questionTitle">پایه‌ای با من یه قرار قشنگ بذاری؟ 🥹</h2>
+<p class="question-copy">قول می‌دم خوش بگذره؛ فقط کافیه جوابت رو انتخاب کنی!</p>
+<p class="feedback" id="feedback" aria-live="polite">منتظر جواب شیرینتم... 💗</p>
+<div class="button-arena" id="buttonArena">
+<button class="button button-yes" id="yesButton" type="button">آره، حتماً 💗</button>
+<button class="button button-no" id="noButton" type="button">نه 🙈</button>
+</div>
+<button class="text-button" id="backToHome" type="button">← برگشت به اول</button>
+</div>
+</section>
+
+<section class="screen calendar-screen" id="calendarScreen" aria-labelledby="calendarTitle" hidden>
+<div class="calendar-layout">
+<header class="calendar-header">
+<div class="calendar-icon" aria-hidden="true">🌷</div>
+<div class="eyebrow">قرارمون رو بسازیم</div>
+<h2 id="calendarTitle">پس کی ببینمت؟ <span>✨</span></h2>
+<p>یه روز خوشگل انتخاب کن تا بذاریمش توی برنامه‌هامون.</p>
+</header>
+<div class="glass calendar-panel">
+<div class="calendar-panel-heading"><span>📅</span><div><strong>تقویم قرارمون</strong><small>روز موردنظرت رو انتخاب کن</small></div></div>
+<div class="dates" id="dates" aria-label="روزهای باقی‌مانده سال ۱۴۰۵"></div>
+<div class="selected-date" id="selectedDate" aria-live="polite">هنوز روزی انتخاب نکردی 💫</div>
+<div class="mania-note" id="maniaNote"><span class="note-star">✦</span><p id="maniaMessage">یه خاطره‌ی خوب، با یه انتخاب کوچولو شروع می‌شه. 💜</p><small>با عشق، مانیا</small></div>
+<div class="calendar-actions"><button class="button button-primary" id="finishButton" type="button" disabled>این روز رو انتخاب کردم 💌</button><button class="text-button" id="backToQuestion" type="button">برگشت به دعوتنامه</button></div>
+</div>
+<footer class="calendar-footer">هر روزی که با حال خوب بگذره، می‌تونه بهترین روز باشه ✨</footer>
+</div>
+</section>
 </main>
-<section class="overlay" id="overlay" role="presentation" hidden>
-<div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-<section id="questionView">
-<h2 id="dialogTitle">دعوت منو قبول می‌کنی؟ 🥹</h2>
-<div class="actions">
-<button class="primary yes" id="yesButton" type="button">آره، حتماً 💗</button>
-<button class="secondary no" id="noButton" type="button">نه 🙈</button>
-</div>
-<p class="feedback" id="feedback" aria-live="polite"></p>
-</section>
-<section id="dateView" hidden>
-<h2>عالیه! 😍<br>حالا بگو چه روزی وقت داری؟</h2>
-<p class="intro">یکی از روزهای باقی‌مانده‌ی سال ۱۴۰۵ رو انتخاب کن.</p>
-<div class="dates" id="dates" aria-label="انتخاب تاریخ"></div>
-<p class="date-result" id="dateResult" aria-live="polite"></p>
-<div class="dialog-footer">
-<button class="secondary" id="backButton" type="button">برگشت</button>
-<button class="primary" id="closeButton" type="button" hidden>تمومه 💌</button>
-</div>
-</section>
-</div>
-</section>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script>
 (() => {
 const $ = id => document.getElementById(id);
-const overlay=$('overlay'), openButton=$('openButton'), questionView=$('questionView'), dateView=$('dateView');
-const yesButton=$('yesButton'), noButton=$('noButton'), feedback=$('feedback'), datesElement=$('dates');
-const dateResult=$('dateResult'), closeButton=$('closeButton'), backButton=$('backButton');
-const monthNames=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
-let lastFocused=null;
+const pages=[$('landing'),$('invitation'),$('calendarScreen')];
+const openButton=$('openButton'),yesButton=$('yesButton'),noButton=$('noButton');
+const arena=$('buttonArena'),feedback=$('feedback'),datesElement=$('dates');
+const selectedDate=$('selectedDate'),maniaMessage=$('maniaMessage'),finishButton=$('finishButton');
+const toast=$('toast');
+let selectedDay=null,noAttempts=0,toastTimer=null;
+const messages=[
+'یه خاطره‌ی خوب، با یه انتخاب کوچولو شروع می‌شه. 💜',
+'قرار نیست همه‌چی بی‌نقص باشه؛ کافیه کنار هم خوش بگذره. ✨',
+'امیدوارم این قرار یکی از اون خاطره‌هایی بشه که بعداً با خنده تعریفش می‌کنیم. 🌷',
+'از همین الان بهونه‌ای برای لبخند زدن داریم! 💌',
+'به نظرم روزهای معمولی با آدم‌های خوب، خاص می‌شن. 🫶',
+'این دعوت کوچولو، کلی ذوق پشتشه. امیدوارم تو هم ذوق کنی! 💗',
+'هر تاریخی انتخاب کنی، مهم اینه که با حال خوب بیای. 🌸'
+];
+const noMessages=['هه! نزدیک بود 😜','اوه اوه، چه سریع بودی! 🙈','این دکمه خیلی خجالتیه 😂','فقط آره رو امتحان کن! 💗','نه؟ من که چیزی ندیدم! ✨','ای وای، دوباره فرار کرد! 🏃‍♀️💨'];
 const persianParts=new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'});
-const displayParts=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-function getPersianDate(date){
- const p=Object.fromEntries(persianParts.formatToParts(date).map(x=>[x.type,x.value]));
- return {year:Number(p.year),month:Number(p.month),day:Number(p.day)};
+const fullPersianDate=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const monthNames=['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+function persianDate(date){
+ const parts=Object.fromEntries(persianParts.formatToParts(date).map(part=>[part.type,part.value]));
+ return {year:Number(parts.year),month:Number(parts.month),day:Number(parts.day)};
+}
+function showPage(page){
+ pages.forEach(item=>{item.hidden=item!==page;item.classList.toggle('active',item===page)});
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function showToast(text){
+ toast.textContent=text;toast.hidden=false;clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>{toast.hidden=true},3200);
+}
+function resetNoButton(){
+ noAttempts=0;noButton.style.left='';noButton.style.top='';noButton.style.transform='';
+ noButton.style.position='';noButton.style.visibility='';noButton.style.pointerEvents='';
+ noButton.dataset.moved='false';feedback.textContent='منتظر جواب شیرینتم... 💗';
+}
+function moveNoButton(event){
+ if(event)event.preventDefault();
+ if(pages[1].hidden)return;
+ const arenaRect=arena.getBoundingClientRect();
+ const buttonRect=noButton.getBoundingClientRect();
+ const yesRect=yesButton.getBoundingClientRect();
+ const pad=8,maxX=Math.max(pad,arena.clientWidth-buttonRect.width-pad),maxY=Math.max(pad,arena.clientHeight-buttonRect.height-pad);
+ let x=pad,y=pad,tries=0;
+ do{
+   x=pad+Math.random()*Math.max(0,maxX-pad);
+   y=pad+Math.random()*Math.max(0,maxY-pad);
+   const candidate={left:arenaRect.left+x,right:arenaRect.left+x+buttonRect.width,top:arenaRect.top+y,bottom:arenaRect.top+y+buttonRect.height};
+   const overlapsYes=!(candidate.right+14<yesRect.left||candidate.left-14>yesRect.right||candidate.bottom+10<yesRect.top||candidate.top-10>yesRect.bottom);
+   tries++;if(!overlapsYes)break;
+ }while(tries<24);
+ noButton.style.position='absolute';noButton.style.left=x+'px';noButton.style.top=y+'px';noButton.style.transform='none';
+ noButton.dataset.moved='true';noAttempts++;
+ feedback.textContent=noMessages[(noAttempts-1)%noMessages.length];
 }
 function buildCalendar(){
  if(datesElement.dataset.built==='true')return;
  datesElement.dataset.built='true';
- const all=[],start=new Date();start.setHours(0,0,0,0);const end=new Date(2027,2,22);
- for(let date=new Date(start);date<end;date.setDate(date.getDate()+1)){
-  const p=getPersianDate(date);if(p.year===1405)all.push({date:new Date(date),...p});
+ const now=new Date();now.setHours(0,0,0,0);
+ const end=new Date(2027,2,21);let currentMonth=0,grid;
+ const days=[];
+ for(let date=new Date(now);date<end;date.setDate(date.getDate()+1)){
+   const p=persianDate(date);if(p.year===1405)days.push({date:new Date(date),...p});
  }
- let currentMonth=0,grid;
- all.forEach(item=>{
+ days.forEach(item=>{
   if(item.month!==currentMonth){
    currentMonth=item.month;
    const section=document.createElement('section');section.className='month';
-   const title=document.createElement('h3');title.className='month-title';title.textContent=monthNames[item.month-1]+' ۱۴۰۵';
-   grid=document.createElement('div');grid.className='date-grid';section.append(title,grid);datesElement.appendChild(section);
+   const heading=document.createElement('h3');heading.className='month-title';heading.textContent=monthNames[item.month-1]+' ۱۴۰۵';
+   grid=document.createElement('div');grid.className='date-grid';section.append(heading,grid);datesElement.appendChild(section);
   }
   const button=document.createElement('button');button.type='button';button.className='date-button';
-  button.textContent=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric',month:'long'}).format(item.date);button.setAttribute('aria-label',displayParts.format(item.date));button.setAttribute('aria-pressed','false');
+  button.textContent=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric'}).format(item.date);
+  button.setAttribute('aria-label',fullPersianDate.format(item.date));button.setAttribute('aria-pressed','false');
   button.addEventListener('click',()=>{
-   datesElement.querySelectorAll('.selected').forEach(el=>{el.classList.remove('selected');el.setAttribute('aria-pressed','false')});
-   button.classList.add('selected');button.setAttribute('aria-pressed','true');
-   dateResult.textContent='پس فعلاً این روز رو در نظر می‌گیریم: '+displayParts.format(item.date)+' 💗';closeButton.hidden=false;
+   datesElement.querySelectorAll('.selected').forEach(old=>{old.classList.remove('selected');old.setAttribute('aria-pressed','false')});
+   button.classList.add('selected');button.setAttribute('aria-pressed','true');selectedDay=item.date;
+   selectedDate.textContent='قرارمون برای '+fullPersianDate.format(item.date)+' 💗';
+   maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];
+   finishButton.disabled=false;
   });
   grid.appendChild(button);
  });
+ if(!days.length)datesElement.textContent='تقویم سال ۱۴۰۵ به پایان رسیده است. 💜';
 }
-function resetDialog(){questionView.hidden=false;dateView.hidden=true;feedback.textContent='';dateResult.textContent='';closeButton.hidden=true;noButton.style.position='';noButton.style.left='';noButton.style.top='';noButton.style.transform='';delete noButton.dataset.x;delete noButton.dataset.y;noAttempts=0;}
-function openDialog(){lastFocused=document.activeElement;overlay.hidden=false;document.body.classList.add('no-scroll');resetDialog();yesButton.focus()}
-function closeDialog(){overlay.hidden=true;document.body.classList.remove('no-scroll');if(lastFocused)lastFocused.focus()}
-openButton.addEventListener('click',openDialog);
-yesButton.addEventListener('click',()=>{questionView.hidden=true;dateView.hidden=false;buildCalendar();backButton.focus()});
-backButton.addEventListener('click',()=>{dateView.hidden=true;questionView.hidden=false;yesButton.focus()});
-closeButton.addEventListener('click',closeDialog);
-// دکمه «نه» قبل از رسیدن اشاره‌گر یا لمس، به‌سرعت جابه‌جا می‌شود.
-const noMessages=['هه! نزدیک بود 😜','این یکی رو امتحان کن! 🙈','فکر کردی می‌ذارم؟ 😄','فقط یه جواب درست داریم! 💗'];
-let noAttempts=0;
-function moveNoButton(event){
- if(questionView.hidden)return;
- if(event)event.preventDefault();
- const area=$('questionView');
- const buttonRect=noButton.getBoundingClientRect();
- const areaRect=area.getBoundingClientRect();
- const padding=12;
- const maxX=Math.max(padding,areaRect.width-buttonRect.width-padding);
- const maxY=Math.max(padding,areaRect.height-buttonRect.height-padding);
- const currentX=parseFloat(noButton.dataset.x||'0');
- const currentY=parseFloat(noButton.dataset.y||'0');
- let nextX=padding+Math.random()*Math.max(0,maxX-padding);
- let nextY=padding+Math.random()*Math.max(0,maxY-padding);
- if(Math.abs(nextX-(areaRect.width/2+currentX))<buttonRect.width+30){
-   nextX=nextX<areaRect.width/2?Math.min(maxX,nextX+buttonRect.width+36):Math.max(padding,nextX-buttonRect.width-36);
- }
- noButton.style.position='absolute';
- noButton.style.left=nextX+'px';
- noButton.style.top=nextY+'px';
- noButton.style.transform='none';
- noButton.dataset.x=String(nextX);
- noButton.dataset.y=String(nextY);
- noAttempts++;
- feedback.textContent=noMessages[(noAttempts-1)%noMessages.length];
-}
+openButton.addEventListener('click',()=>{resetNoButton();showPage(pages[1]);yesButton.focus()});
+$('backToHome').addEventListener('click',()=>showPage(pages[0]));
+yesButton.addEventListener('click',()=>{buildCalendar();selectedDay=null;selectedDate.textContent='هنوز روزی انتخاب نکردی 💫';finishButton.disabled=true;maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];showPage(pages[2])});
+$('backToQuestion').addEventListener('click',()=>{resetNoButton();showPage(pages[1])});
+finishButton.addEventListener('click',()=>{
+ if(!selectedDay)return;
+ showToast('قرارمون فعلاً برای '+fullPersianDate.format(selectedDay)+' انتخاب شد! 💗');
+});
 noButton.addEventListener('pointerenter',moveNoButton);
 noButton.addEventListener('pointerdown',moveNoButton);
 noButton.addEventListener('click',moveNoButton);
-noButton.addEventListener('focus',()=>{if(!questionView.hidden)moveNoButton()});
-
-overlay.addEventListener('click',event=>{if(event.target===overlay)closeDialog()});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)closeDialog()});
+noButton.addEventListener('focus',()=>{if(!pages[1].hidden)moveNoButton()});
+window.addEventListener('resize',()=>{if(!pages[1].hidden&&noButton.dataset.moved==='true')moveNoButton()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!pages[0].hidden){showPage(pages[0])}});
 })();
 </script>
 </body>
