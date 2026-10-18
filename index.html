@@ -76,14 +76,46 @@ function buildCalendar(){
   grid.appendChild(button);
  });
 }
-function resetDialog(){questionView.hidden=false;dateView.hidden=true;feedback.textContent='';dateResult.textContent='';closeButton.hidden=true;noButton.style.transform=''}
+function resetDialog(){questionView.hidden=false;dateView.hidden=true;feedback.textContent='';dateResult.textContent='';closeButton.hidden=true;noButton.style.position='';noButton.style.left='';noButton.style.top='';noButton.style.transform='';delete noButton.dataset.x;delete noButton.dataset.y;noAttempts=0;}
 function openDialog(){lastFocused=document.activeElement;overlay.hidden=false;document.body.classList.add('no-scroll');resetDialog();yesButton.focus()}
 function closeDialog(){overlay.hidden=true;document.body.classList.remove('no-scroll');if(lastFocused)lastFocused.focus()}
 openButton.addEventListener('click',openDialog);
 yesButton.addEventListener('click',()=>{questionView.hidden=true;dateView.hidden=false;buildCalendar();backButton.focus()});
 backButton.addEventListener('click',()=>{dateView.hidden=true;questionView.hidden=false;yesButton.focus()});
 closeButton.addEventListener('click',closeDialog);
-noButton.addEventListener('click',()=>{feedback.textContent='اوه اوه! 😄 یه بار دیگه فکر کن!';noButton.style.transform='translate('+(Math.round(Math.random()*18-9))+'px,'+(Math.round(Math.random()*10-5))+'px)'});
+// دکمه «نه» قبل از رسیدن اشاره‌گر یا لمس، به‌سرعت جابه‌جا می‌شود.
+const noMessages=['هه! نزدیک بود 😜','این یکی رو امتحان کن! 🙈','فکر کردی می‌ذارم؟ 😄','فقط یه جواب درست داریم! 💗'];
+let noAttempts=0;
+function moveNoButton(event){
+ if(questionView.hidden)return;
+ if(event)event.preventDefault();
+ const area=$('questionView');
+ const buttonRect=noButton.getBoundingClientRect();
+ const areaRect=area.getBoundingClientRect();
+ const padding=12;
+ const maxX=Math.max(padding,areaRect.width-buttonRect.width-padding);
+ const maxY=Math.max(padding,areaRect.height-buttonRect.height-padding);
+ const currentX=parseFloat(noButton.dataset.x||'0');
+ const currentY=parseFloat(noButton.dataset.y||'0');
+ let nextX=padding+Math.random()*Math.max(0,maxX-padding);
+ let nextY=padding+Math.random()*Math.max(0,maxY-padding);
+ if(Math.abs(nextX-(areaRect.width/2+currentX))<buttonRect.width+30){
+   nextX=nextX<areaRect.width/2?Math.min(maxX,nextX+buttonRect.width+36):Math.max(padding,nextX-buttonRect.width-36);
+ }
+ noButton.style.position='absolute';
+ noButton.style.left=nextX+'px';
+ noButton.style.top=nextY+'px';
+ noButton.style.transform='none';
+ noButton.dataset.x=String(nextX);
+ noButton.dataset.y=String(nextY);
+ noAttempts++;
+ feedback.textContent=noMessages[(noAttempts-1)%noMessages.length];
+}
+noButton.addEventListener('pointerenter',moveNoButton);
+noButton.addEventListener('pointerdown',moveNoButton);
+noButton.addEventListener('click',moveNoButton);
+noButton.addEventListener('focus',()=>{if(!questionView.hidden)moveNoButton()});
+
 overlay.addEventListener('click',event=>{if(event.target===overlay)closeDialog()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!overlay.hidden)closeDialog()});
 })();
