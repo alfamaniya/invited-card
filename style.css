@@ -2,13 +2,13 @@
 :root{color-scheme:dark;--ink:#fffaff;--muted:#e6dff5;--violet:#a78bfa;--pink:#f9a8d4;--glass:rgba(255,255,255,.12);--line:rgba(255,255,255,.24);--shadow:0 28px 90px rgba(23,8,53,.28)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-html{min-height:100%;background:#1b123b}
-body{margin:0;min-height:100vh;min-height:100svh;overflow-x:hidden;font-family:'Vazirmatn',Tahoma,sans-serif;color:var(--ink);background:linear-gradient(-45deg,#25154b,#51358a,#9b5b9b,#443b91,#1c466a);background-size:400% 400%;animation:gradientShift 18s ease infinite}
+html{height:100%;min-height:100%;background:#1b123b;overflow:hidden}
+body{margin:0;width:100%;height:100vh;height:100svh;min-height:0;overflow:hidden;font-family:'Vazirmatn',Tahoma,sans-serif;color:var(--ink);background:linear-gradient(-45deg,#25154b,#51358a,#9b5b9b,#443b91,#1c466a);background-size:400% 400%;animation:gradientShift 18s ease infinite}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000 5%,#000b 65%,transparent)}
 main{position:relative;z-index:1}
 button{font:inherit}
-.screen{width:100%;min-height:100vh;min-height:100svh;position:relative;isolation:isolate}
-.landing{display:flex;align-items:center;justify-content:center;flex-direction:column;padding:28px 18px 18px}
+.screen{width:100%;height:100vh;height:100svh;min-height:0;position:relative;isolation:isolate;overflow:hidden}
+.landing{display:flex;align-items:center;justify-content:center;flex-direction:column;padding:clamp(10px,2.5vh,28px) 18px}
 .glass{background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.07));border:1px solid var(--line);box-shadow:var(--shadow),inset 0 1px 0 #ffffff36;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
 .hero{width:min(100%,650px);padding:clamp(30px,7vw,66px) clamp(22px,7vw,64px);border-radius:36px;text-align:center;position:relative;overflow:hidden;animation:floatIn .8s cubic-bezier(.2,.8,.2,1) both}
 .hero:before,.invitation-card:before{content:"";position:absolute;width:230px;height:230px;border-radius:50%;background:#f9a8d42b;filter:blur(20px);top:-120px;right:-70px;pointer-events:none}
@@ -28,12 +28,12 @@ h1 span{background:linear-gradient(100deg,#fff 15%,#ffd4ec 48%,#d8c7ff 85%);-web
 .landing-footer{margin-top:22px;text-align:center;color:#f0e5ffb0;font-size:12px}
 .ambient{position:fixed;z-index:0;width:340px;height:340px;border-radius:50%;filter:blur(95px);opacity:.32;pointer-events:none;animation:orb 12s ease-in-out infinite alternate}
 .ambient-one{top:-120px;left:-120px;background:#e879f9}.ambient-two{bottom:-140px;right:-100px;background:#60a5fa;animation-delay:-5s}
-.invitation{display:flex;align-items:center;justify-content:center;padding:28px 18px}
-.invitation-card{position:relative;overflow:hidden;width:min(100%,620px);padding:clamp(28px,6vw,58px);border-radius:32px;text-align:center;animation:floatIn .55s ease both}
+.invitation{display:flex;align-items:center;justify-content:center;padding:clamp(10px,2vh,24px) 18px}
+.invitation-card{position:relative;overflow:hidden;width:min(100%,620px);max-height:calc(100svh - 24px);padding:clamp(14px,3.5vh,38px) clamp(18px,5vw,48px);border-radius:32px;text-align:center;animation:floatIn .55s ease both}
 .mini-envelope{font-size:48px;margin-bottom:12px;filter:drop-shadow(0 8px 15px #f9a8d43d)}
 .invitation-card h2,.calendar-header h2{font-size:clamp(25px,5.4vw,39px);line-height:1.7;margin:12px 0;font-weight:800}
 .question-copy{color:#eee5ff;line-height:2;margin:0 auto;max-width:440px;font-size:14px}
-.feedback{display:flex;align-items:center;justify-content:center;min-height:48px;margin:20px 0 12px;padding:8px 12px;border:1px solid #ffffff1f;border-radius:14px;background:#ffffff0b;color:#ffe0f3;font-size:14px;line-height:1.8}
+.feedback{display:flex;align-items:center;justify-content:center;min-height:48px;margin:20px 0 12px;padding:8px 12px;border:1px solid #ffffff1f;border-radius:14px;background:#ffffff0b;color:#ffe0f3;font-size:clamp(10px,1.5vh,13px);line-height:1.4}
 .button-arena{position:relative;display:flex;align-items:center;justify-content:center;gap:14px;min-height:100px;padding:8px;isolation:isolate}
 .button-yes{z-index:1;color:#452252;background:linear-gradient(135deg,#fbcfe8,#e9d5ff);border-color:#ffffffb3;box-shadow:0 10px 28px #f0abfc3b}
 .button-yes:hover{transform:translateY(-3px);box-shadow:0 14px 34px #f0abfc55}
@@ -41,40 +41,45 @@ h1 span{background:linear-gradient(100deg,#fff 15%,#ffd4ec 48%,#d8c7ff 85%);-web
 .button-no:hover{background:#ffffff24}
 .text-button{position:relative;z-index:3;display:inline-flex;align-items:center;justify-content:center;margin-top:16px;padding:9px 13px;border:0;background:transparent;color:#e8dafa;cursor:pointer;font-size:13px;opacity:.85}
 .text-button:hover{opacity:1;color:white}
-.calendar-screen{padding:clamp(22px,4vw,46px) 16px;display:flex;align-items:center;justify-content:center}
-.calendar-layout{width:min(100%,900px);margin:auto;animation:floatIn .6s ease both}
-.calendar-header{text-align:center;margin:0 auto 24px}
-.calendar-icon{font-size:42px;filter:drop-shadow(0 7px 20px #f9a8d44d)}
+.calendar-screen{height:100vh;height:100svh;padding:clamp(8px,1.5vh,18px) 12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.calendar-layout{width:min(100%,1040px);max-height:100%;margin:auto;display:flex;flex-direction:column;justify-content:center;gap:clamp(6px,1vh,12px);animation:floatIn .6s ease both}
+.calendar-header{text-align:center;margin:0 auto;flex:0 0 auto}
+.calendar-icon{font-size:clamp(22px,4vh,36px);filter:drop-shadow(0 7px 20px #f9a8d44d)}
 .calendar-header .eyebrow{margin-top:7px}
-.calendar-header h2{margin:4px 0;font-size:clamp(29px,5vw,42px)}
+.calendar-header h2{margin:0;font-size:clamp(21px,3.6vh,34px);line-height:1.35}
 .calendar-header h2 span{color:#fbcfe8}
-.calendar-header p{margin:0;color:#e7def7;line-height:1.9;font-size:14px}
-.calendar-panel{padding:clamp(16px,3vw,28px);border-radius:28px}
-.calendar-panel-heading{display:flex;align-items:center;gap:12px;margin-bottom:17px}
-.calendar-panel-heading>span{display:grid;place-items:center;width:46px;height:46px;border-radius:15px;background:#ffffff17;font-size:23px}
+.calendar-header p{margin:2px 0 0;color:#e7def7;line-height:1.45;font-size:clamp(10px,1.5vh,13px)}
+.calendar-panel{padding:clamp(8px,1.4vh,16px);border-radius:22px;min-height:0;overflow:hidden}
+.calendar-panel-heading{display:flex;align-items:center;gap:9px;margin-bottom:clamp(5px,1vh,10px)}
+.calendar-panel-heading>span{display:grid;place-items:center;width:clamp(30px,4vh,40px);height:clamp(30px,4vh,40px);border-radius:15px;background:#ffffff17;font-size:23px}
 .calendar-panel-heading strong,.calendar-panel-heading small{display:block}
 .calendar-panel-heading strong{font-size:16px}.calendar-panel-heading small{margin-top:3px;color:#dfd3f4;font-size:12px}
-.dates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-height:min(38vh,360px);overflow:auto;padding:3px 5px 10px;scrollbar-color:#c4a5f6aa #ffffff0b;scrollbar-width:thin}
-.month{min-width:0;padding:11px;border:1px solid #ffffff24;border-radius:17px;background:#ffffff09}
-.month-title{position:sticky;top:0;z-index:1;margin:0 0 10px;padding:8px 6px;border-radius:10px;text-align:center;color:#fff;background:linear-gradient(120deg,#9870d8e8,#cf80b8e8);font-size:13px;backdrop-filter:blur(10px)}
-.date-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.date-button{min-width:0;min-height:38px;padding:5px 2px;border:1px solid #ffffff21;border-radius:10px;background:#ffffff0a;color:#f8efff;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;font-size:13px}
+.dates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(5px,1vw,12px);max-height:none;overflow:visible;padding:0;}
+.month{min-width:0;padding:clamp(4px,.8vh,9px);border:1px solid #ffffff24;border-radius:17px;background:#ffffff09}
+.month-title{position:relative;top:auto;z-index:1;margin:0 0 5px;padding:clamp(4px,.7vh,7px) 4px;border-radius:10px;text-align:center;color:#fff;background:linear-gradient(120deg,#9870d8e8,#cf80b8e8);font-size:13px;backdrop-filter:blur(10px)}
+.date-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(2px,.4vw,5px)}
+.weekday{display:grid;place-items:center;min-width:0;min-height:clamp(15px,2vh,22px);color:#e5d5ff;font-size:clamp(9px,1.3vh,12px)}
+.date-spacer{min-width:0;min-height:clamp(22px,3.1vh,34px)}
+.date-button{min-width:0;min-height:clamp(22px,3.1vh,34px);padding:1px 0;border:1px solid #ffffff21;border-radius:10px;background:#ffffff0a;color:#f8efff;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;font-size:clamp(9px,1.5vh,13px)}
+.date-button:disabled{opacity:.24;cursor:default;transform:none}
 .date-button:hover{transform:translateY(-2px);border-color:#f0c6ff;background:#ffffff20}
 .date-button.selected{color:#48204f;background:linear-gradient(135deg,#fbcfe8,#ddd6fe);border-color:#fff;box-shadow:0 4px 16px #e9a9f73b}
-.selected-date{min-height:48px;display:flex;align-items:center;justify-content:center;margin-top:14px;padding:10px;border:1px solid #ffffff20;border-radius:14px;background:#ffffff09;text-align:center;color:#ffe1f3;font-size:14px;line-height:1.8}
-.mania-note{position:relative;margin-top:14px;padding:17px 20px 15px;border:1px solid #fbcfe83d;border-radius:18px;background:linear-gradient(120deg,#fbcfe813,#ddd6fe13);text-align:center;overflow:hidden}
-.note-star{color:#f9c6e5;font-size:20px}
-.mania-note p{margin:6px auto 8px;max-width:650px;color:#fff3fb;font-size:14px;line-height:2}
-.mania-note small{color:#e5d5ff;font-size:12px}
-.calendar-actions{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:17px}
-.calendar-actions .button{width:min(100%,330px)}
+.selected-date{min-height:clamp(30px,4vh,42px);display:flex;align-items:center;justify-content:center;margin-top:clamp(5px,.8vh,10px);padding:clamp(4px,.8vh,8px);border:1px solid #ffffff20;border-radius:14px;background:#ffffff09;text-align:center;color:#ffe1f3;font-size:14px;line-height:1.8}
+.mania-note{position:relative;margin-top:clamp(5px,.8vh,10px);padding:clamp(5px,1vh,11px) 12px;border:1px solid #fbcfe83d;border-radius:18px;background:linear-gradient(120deg,#fbcfe813,#ddd6fe13);text-align:center;overflow:hidden}
+.note-star{color:#f9c6e5;font-size:clamp(12px,2vh,18px)}
+.mania-note p{margin:2px auto 3px;max-width:650px;color:#fff3fb;font-size:clamp(10px,1.5vh,13px);line-height:1.4}
+.mania-note small{color:#e5d5ff;font-size:clamp(9px,1.3vh,11px)}
+.calendar-actions{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:clamp(4px,.8vh,8px)}
+.calendar-actions .button{width:min(100%,330px);min-height:clamp(34px,5vh,46px);padding:6px 14px;font-size:clamp(11px,1.5vh,13px)}
+.calendar-actions .text-button{margin-top:0;padding:5px 10px;font-size:clamp(10px,1.3vh,12px)}
 .button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.25);transform:none;box-shadow:none}
-.calendar-footer{text-align:center;color:#e9dff7a8;font-size:12px;margin-top:17px}
+.calendar-footer{text-align:center;color:#e9dff7a8;font-size:clamp(9px,1.2vh,11px);margin-top:0;flex:0 0 auto}
 .toast{position:fixed;z-index:20;bottom:24px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:14px 20px;border:1px solid #ffffff55;border-radius:16px;background:#382456eF;color:white;box-shadow:var(--shadow);backdrop-filter:blur(20px);text-align:center;line-height:1.8;animation:floatIn .25s ease}
 @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes floatIn{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes envelopeFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
 @keyframes orb{from{transform:translate3d(-15px,0,0) scale(.95)}to{transform:translate3d(35px,25px,0) scale(1.12)}}
-@media(max-width:760px){.dates{grid-template-columns:repeat(2,minmax(0,1fr));max-height:42vh}.calendar-screen{align-items:flex-start}.calendar-header{margin-bottom:18px}.calendar-panel{border-radius:23px}}
-@media(max-width:430px){.hero{border-radius:27px}.invitation-card{border-radius:25px}.button-arena{gap:8px;min-height:100px}.button{padding:12px 17px;min-height:50px;font-size:14px}.dates{gap:8px;padding-inline:0}.month{padding:7px}.date-grid{gap:5px}.date-button{min-height:36px}.calendar-panel{padding:14px}.calendar-header p{font-size:13px}}
+@media(max-width:760px){.dates{grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-screen{align-items:center}.calendar-panel{border-radius:18px}.calendar-header{margin-bottom:0}}
+@media(max-width:430px){.hero{border-radius:24px;padding:clamp(15px,4vh,32px) 18px}.hero-envelope{margin:clamp(8px,2vh,18px) 0}.hero-copy{margin:10px auto 16px;line-height:1.7}.landing-footer{margin-top:10px}.invitation-card{border-radius:22px;padding:clamp(12px,3vh,24px) 15px}.mini-envelope{font-size:35px;margin-bottom:5px}.invitation-card h2{font-size:clamp(21px,4vh,30px);line-height:1.45;margin:7px 0}.question-copy{font-size:12px;line-height:1.6}.feedback{margin:9px 0 4px;min-height:36px;font-size:12px}.button-arena{gap:8px;min-height:76px}.button{padding:9px 14px;min-height:42px;font-size:12px}.dates{gap:4px}.month{padding:4px}.date-grid{gap:2px}.date-button{min-height:clamp(20px,3vh,29px);border-radius:6px}.calendar-panel{padding:7px}.calendar-header p{font-size:10px}.calendar-panel-heading strong{font-size:13px}.calendar-panel-heading small{font-size:10px}.calendar-header h2{font-size:clamp(19px,3.4vh,27px)}}
+@media(max-height:650px){.calendar-icon{display:none}.calendar-header .eyebrow{margin-top:0}.calendar-panel-heading{margin-bottom:4px}.calendar-footer{display:none}.hero-envelope{font-size:52px;margin:8px 0}.hero{padding:16px 20px}.invitation-card{padding:12px 20px}.mini-envelope{font-size:30px;margin-bottom:2px}.invitation-card h2{margin:5px 0}.feedback{margin:5px 0;min-height:32px}.button-arena{min-height:62px}.text-button{margin-top:5px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
