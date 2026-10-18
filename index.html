@@ -48,10 +48,10 @@
 </header>
 <div class="glass calendar-panel">
 <div class="calendar-panel-heading"><span>📅</span><div><strong>تقویم قرارمون</strong><small>روز موردنظرت رو انتخاب کن</small></div></div>
-<div class="dates" id="dates" aria-label="روزهای باقی‌مانده سال ۱۴۰۵"></div>
+<div class="dates" id="dates" aria-label="تقویم ماه جاری و ماه بعد"></div>
 <div class="selected-date" id="selectedDate" aria-live="polite">هنوز روزی انتخاب نکردی 💫</div>
 <div class="mania-note" id="maniaNote"><span class="note-star">✦</span><p id="maniaMessage">یه خاطره‌ی خوب، با یه انتخاب کوچولو شروع می‌شه. 💜</p><small>با عشق، مانیا</small></div>
-<div class="calendar-actions"><button class="button button-primary" id="finishButton" type="button" disabled>این روز رو انتخاب کردم 💌</button><button class="text-button" id="backToQuestion" type="button">برگشت به دعوتنامه</button></div>
+<div class="calendar-actions"><button class="button button-primary" id="finishButton" type="button" disabled>تأیید و اشتراک‌گذاری 💌</button><button class="text-button" id="backToQuestion" type="button">برگشت به دعوتنامه</button></div>
 </div>
 <footer class="calendar-footer">هر روزی که با حال خوب بگذره، می‌تونه بهترین روز باشه ✨</footer>
 </div>
@@ -117,43 +117,105 @@ function moveNoButton(event){
  feedback.textContent=noMessages[(noAttempts-1)%noMessages.length];
 }
 function buildCalendar(){
- if(datesElement.dataset.built==='true')return;
+ datesElement.replaceChildren();
  datesElement.dataset.built='true';
- const now=new Date();now.setHours(0,0,0,0);
- const end=new Date(2027,2,21);let currentMonth=0,grid;
- const days=[];
- for(let date=new Date(now);date<end;date.setDate(date.getDate()+1)){
-   const p=persianDate(date);if(p.year===1405)days.push({date:new Date(date),...p});
- }
- days.forEach(item=>{
-  if(item.month!==currentMonth){
-   currentMonth=item.month;
-   const section=document.createElement('section');section.className='month';
-   const heading=document.createElement('h3');heading.className='month-title';heading.textContent=monthNames[item.month-1]+' ۱۴۰۵';
-   grid=document.createElement('div');grid.className='date-grid';section.append(heading,grid);datesElement.appendChild(section);
+ const today=new Date();today.setHours(0,0,0,0);
+ const current=persianDate(today);
+ const firstOfCurrent=new Date(today);
+ while(true){const previous=new Date(firstOfCurrent);previous.setDate(previous.getDate()-1);const p=persianDate(previous);if(p.year!==current.year||p.month!==current.month)break;firstOfCurrent.setDate(firstOfCurrent.getDate()-1);}
+ const firstOfNext=new Date(firstOfCurrent);
+ while(true){const p=persianDate(firstOfNext);if(p.year!==current.year||p.month!==current.month)break;firstOfNext.setDate(firstOfNext.getDate()+1);}
+ const firstAfterNext=new Date(firstOfNext);
+ const next=persianDate(firstOfNext);
+ while(true){const p=persianDate(firstAfterNext);if(p.year!==next.year||p.month!==next.month)break;firstAfterNext.setDate(firstAfterNext.getDate()+1);}
+ const monthStarts=[firstOfCurrent,firstOfNext];
+ monthStarts.forEach((monthStart,monthIndex)=>{
+  const info=persianDate(monthStart);
+  const section=document.createElement('section');section.className='month';
+  const heading=document.createElement('h3');heading.className='month-title';heading.textContent=monthNames[info.month-1]+' '+new Intl.NumberFormat('fa-IR').format(info.year);
+  const grid=document.createElement('div');grid.className='date-grid';
+  ['ش','ی','د','س','چ','پ','ج'].forEach(dayName=>{const label=document.createElement('span');label.className='weekday';label.textContent=dayName;grid.appendChild(label)});
+  const offset=(monthStart.getDay()+1)%7;
+  for(let blank=0;blank<offset;blank++){const spacer=document.createElement('span');spacer.className='date-spacer';spacer.setAttribute('aria-hidden','true');grid.appendChild(spacer);}
+  const monthEnd=monthIndex===0?firstOfNext:firstAfterNext;
+  for(let date=new Date(monthStart);date<monthEnd;date.setDate(date.getDate()+1)){
+   const dateCopy=new Date(date);dateCopy.setHours(0,0,0,0);const p=persianDate(dateCopy);
+   const button=document.createElement('button');button.type='button';button.className='date-button';
+   button.textContent=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric'}).format(dateCopy);
+   button.setAttribute('aria-label',fullPersianDate.format(dateCopy));button.setAttribute('aria-pressed','false');
+   if(dateCopy<today){button.disabled=true;button.classList.add('past-date')}
+   button.addEventListener('click',()=>{
+    datesElement.querySelectorAll('.selected').forEach(old=>{old.classList.remove('selected');old.setAttribute('aria-pressed','false')});
+    button.classList.add('selected');button.setAttribute('aria-pressed','true');selectedDay=new Date(dateCopy);
+    selectedDate.textContent='قرارمون برای '+fullPersianDate.format(dateCopy)+' 💗';
+    maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];
+    finishButton.disabled=false;
+   });
+   grid.appendChild(button);
   }
-  const button=document.createElement('button');button.type='button';button.className='date-button';
-  button.textContent=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric'}).format(item.date);
-  button.setAttribute('aria-label',fullPersianDate.format(item.date));button.setAttribute('aria-pressed','false');
-  button.addEventListener('click',()=>{
-   datesElement.querySelectorAll('.selected').forEach(old=>{old.classList.remove('selected');old.setAttribute('aria-pressed','false')});
-   button.classList.add('selected');button.setAttribute('aria-pressed','true');selectedDay=item.date;
-   selectedDate.textContent='قرارمون برای '+fullPersianDate.format(item.date)+' 💗';
-   maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];
-   finishButton.disabled=false;
-  });
-  grid.appendChild(button);
+  section.append(heading,grid);datesElement.appendChild(section);
  });
- if(!days.length)datesElement.textContent='تقویم سال ۱۴۰۵ به پایان رسیده است. 💜';
+}
+function drawShareImage(){
+ return new Promise((resolve,reject)=>{
+  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
+  const ctx=canvas.getContext('2d');if(!ctx){reject(new Error('Canvas در این مرورگر پشتیبانی نمی‌شود'));return;}
+  const bg=ctx.createLinearGradient(0,0,1080,1350);bg.addColorStop(0,'#25154b');bg.addColorStop(.5,'#754a9f');bg.addColorStop(1,'#d27eb4');ctx.fillStyle=bg;ctx.fillRect(0,0,1080,1350);
+  ctx.strokeStyle='rgba(255,255,255,.10)';ctx.lineWidth=2;
+  for(let x=0;x<1080;x+=42){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,1350);ctx.stroke()}
+  for(let y=0;y<1350;y+=42){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(1080,y);ctx.stroke()}
+  const roundRect=(x,y,w,h,r)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r)};
+  roundRect(65,65,950,1220,42);ctx.fillStyle='rgba(255,255,255,.13)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
+  ctx.textAlign='center';ctx.direction='rtl';ctx.fillStyle='#ffe3f4';ctx.font='600 34px Vazirmatn, Tahoma, sans-serif';ctx.fillText('یه قرار قشنگ از طرف مانیا 💌',540,145);
+  ctx.fillStyle='#ffffff';ctx.font='800 54px Vazirmatn, Tahoma, sans-serif';ctx.fillText('پس کی ببینمت؟',540,225);
+  ctx.fillStyle='#f8eaff';ctx.font='500 28px Vazirmatn, Tahoma, sans-serif';ctx.fillText('این روز رو برای قرارمون انتخاب کردیم:',540,278);
+  const p=persianDate(selectedDay);const monthLabel=monthNames[p.month-1]+' '+new Intl.NumberFormat('fa-IR').format(p.year);
+  roundRect(125,330,830,540,30);ctx.fillStyle='rgba(255,255,255,.11)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,.28)';ctx.stroke();
+  ctx.fillStyle='#ffe1f2';ctx.font='700 38px Vazirmatn, Tahoma, sans-serif';ctx.fillText(monthLabel,540,390);
+  const weekdays=['ش','ی','د','س','چ','پ','ج'];ctx.font='600 24px Vazirmatn, Tahoma, sans-serif';ctx.fillStyle='#e9d9ff';
+  const cellW=94,startX=540-(cellW*7/2)+cellW/2;
+  weekdays.forEach((d,i)=>ctx.fillText(d,startX+i*cellW,445));
+  const monthStart=new Date(selectedDay);while(persianDate(monthStart).day!==1)monthStart.setDate(monthStart.getDate()-1);
+  const offset=(monthStart.getDay()+1)%7;const days=[];
+  const iter=new Date(monthStart);while(persianDate(iter).year===p.year&&persianDate(iter).month===p.month){days.push(new Date(iter));iter.setDate(iter.getDate()+1)}
+  const chosenIndex=days.findIndex(d=>d.getDate()===selectedDay.getDate()&&d.getMonth()===selectedDay.getMonth()&&d.getFullYear()===selectedDay.getFullYear());
+  days.forEach((day,i)=>{
+   const col=(offset+i)%7,row=Math.floor((offset+i)/7),x=startX+col*cellW,y=490+row*62;
+   const isChosen=i===chosenIndex;
+   if(isChosen){roundRect(x-31,y-31,62,54,15);ctx.fillStyle='#fbcfe8';ctx.fill()}
+   ctx.fillStyle=isChosen?'#51265d':'#ffffff';ctx.font=(isChosen?'800 ':'500 ')+'26px Vazirmatn, Tahoma, sans-serif';
+   ctx.fillText(new Intl.DateTimeFormat('fa-IR-u-ca-persian',{day:'numeric'}).format(day),x,y+8);
+  });
+  ctx.fillStyle='#ffffff';ctx.font='700 39px Vazirmatn, Tahoma, sans-serif';ctx.fillText(fullPersianDate.format(selectedDay),540,955);
+  ctx.fillStyle='#ffedf7';ctx.font='500 29px Vazirmatn, Tahoma, sans-serif';
+  const msg=maniaMessage.textContent;const maxChars=38;const lines=[];
+  for(let i=0;i<msg.length;i+=maxChars)lines.push(msg.slice(i,i+maxChars));
+  lines.slice(0,3).forEach((line,i)=>ctx.fillText(line,540,1030+i*48));
+  ctx.fillStyle='#ffe3f4';ctx.font='700 34px Vazirmatn, Tahoma, sans-serif';ctx.fillText('با عشق، مانیا ✨',540,1200);
+  canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('ساخت تصویر ناموفق بود')),'image/png');
+ });
+}
+async function confirmAndShare(){
+ if(!selectedDay)return;
+ finishButton.disabled=true;finishButton.textContent='دارم تصویر رو آماده می‌کنم… ✨';
+ try{
+  const blob=await drawShareImage();const file=new File([blob],'gharar-ba-mania.png',{type:'image/png'});
+  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+   await navigator.share({files:[file],title:'قرار من و مانیا 💌',text:'تاریخ قرارمون رو انتخاب کردیم 💗'});
+  }else{
+   const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='gharar-ba-mania.png';document.body.appendChild(link);link.click();link.remove();
+   showToast('تصویر تقویم دانلود شد؛ حالا می‌تونی از گالری یا فایل‌ها به اشتراک بذاری. 💗');
+   if(navigator.share){try{await navigator.share({title:'قرار من و مانیا 💌',text:'تاریخ قرارمون: '+fullPersianDate.format(selectedDay)})}catch(_){}}
+  }
+ }catch(error){
+  if(error&&error.name!=='AbortError')showToast('اشتراک‌گذاری مستقیم در این مرورگر در دسترس نیست؛ تصویر رو دوباره امتحان کن. 💜');
+ }finally{finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌'}
 }
 openButton.addEventListener('click',()=>{resetNoButton();showPage(pages[1]);yesButton.focus()});
 $('backToHome').addEventListener('click',()=>showPage(pages[0]));
 yesButton.addEventListener('click',()=>{buildCalendar();selectedDay=null;selectedDate.textContent='هنوز روزی انتخاب نکردی 💫';finishButton.disabled=true;maniaMessage.textContent=messages[Math.floor(Math.random()*messages.length)];showPage(pages[2])});
 $('backToQuestion').addEventListener('click',()=>{resetNoButton();showPage(pages[1])});
-finishButton.addEventListener('click',()=>{
- if(!selectedDay)return;
- showToast('قرارمون فعلاً برای '+fullPersianDate.format(selectedDay)+' انتخاب شد! 💗');
-});
+finishButton.addEventListener('click',confirmAndShare);
 noButton.addEventListener('pointerenter',moveNoButton);
 noButton.addEventListener('pointerdown',moveNoButton);
 noButton.addEventListener('click',moveNoButton);
