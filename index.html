@@ -225,18 +225,29 @@ function drawShareImage(){
 async function confirmAndShare(){
  if(!selectedDay)return;
  finishButton.disabled=true;finishButton.textContent='دارم تصویر رو آماده می‌کنم… ✨';
+ let completed=false;
  try{
   const blob=await drawShareImage();const file=new File([blob],'gharar-ba-mania.png',{type:'image/png'});
   if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
    await navigator.share({files:[file],title:'قرار من و مانیا 💌',text:guestName+' جان، تاریخ قرارمون رو انتخاب کردیم 💗'});
+   completed=true;
   }else{
    const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='gharar-ba-mania.png';document.body.appendChild(link);link.click();link.remove();
+   window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+   completed=true;
    showToast('تصویر تقویم دانلود شد؛ حالا می‌تونی از گالری یا فایل‌ها به اشتراک بذاری. 💗');
    if(navigator.share){try{await navigator.share({title:'قرار من و مانیا 💌',text:guestName+' جان، تاریخ قرارمون: '+fullPersianDate.format(selectedDay)})}catch(_){}}
   }
  }catch(error){
-  if(error&&error.name!=='AbortError')showToast('اشتراک‌گذاری مستقیم در این مرورگر در دسترس نیست؛ تصویر رو دوباره امتحان کن. 💜');
- }finally{finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌';showPage(pages[0]);}
+  if(error&&error.name==='AbortError'){
+   showToast('اشتراک‌گذاری لغو شد؛ تاریخ انتخابی‌ات هنوز باقیه. 💗');
+  }else{
+   showToast('ساخت یا اشتراک‌گذاری تصویر ناموفق بود؛ دوباره امتحان کن. 💜');
+  }
+ }finally{
+  finishButton.disabled=!selectedDay;finishButton.textContent='تأیید و اشتراک‌گذاری 💌';
+  if(completed)showPage(pages[0]);
+ }
 }
 guestNameInput.addEventListener('input',()=>{openButton.disabled=!guestNameInput.value.trim()});
 guestNameInput.addEventListener('keydown',event=>{if(event.key==='Enter'&&!openButton.disabled){event.preventDefault();openButton.click()}});
